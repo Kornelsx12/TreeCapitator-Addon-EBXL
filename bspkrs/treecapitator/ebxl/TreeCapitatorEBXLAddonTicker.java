@@ -10,45 +10,45 @@ import cpw.mods.fml.common.asm.SideOnly;
 
 public class TreeCapitatorEBXLAddonTicker implements ITickHandler 
 {
-	private EnumSet<TickType> tickTypes = EnumSet.noneOf(TickType.class);
+    private EnumSet<TickType> tickTypes = EnumSet.noneOf(TickType.class);
 
-	public TreeCapitatorEBXLAddonTicker(EnumSet<TickType> tickTypes) {
-		this.tickTypes = tickTypes;
-	}
+    public TreeCapitatorEBXLAddonTicker(EnumSet<TickType> tickTypes) {
+        this.tickTypes = tickTypes;
+    }
 
-	@Override
-	public void tickStart(EnumSet<TickType> tickTypes, Object... tickData) 
-	{
-		tick(tickTypes, true);
-	}
+    @Override
+    public void tickStart(EnumSet<TickType> tickTypes, Object... tickData) 
+    {
+        tick(tickTypes, true);
+    }
 
-	@Override
-	public void tickEnd(EnumSet<TickType> tickTypes, Object... tickData) 
-	{
-		tick(tickTypes, false);
-	}
+    @Override
+    public void tickEnd(EnumSet<TickType> tickTypes, Object... tickData) 
+    {
+        tick(tickTypes, false);
+    }
 
-	private void tick(EnumSet<TickType> tickTypes, boolean isStart) {
-		for (TickType tickType : tickTypes) 
-		{
-			if (!TreeCapitatorEBXLAddonMod.onTick(tickType, isStart)) 
-			{
-				this.tickTypes.remove(tickType);
-				this.tickTypes.removeAll(tickType.partnerTicks());
-			}
-		}
-	}
+    private void tick(EnumSet<TickType> tickTypes, boolean isStart) {
+        for (TickType tickType : tickTypes) 
+        {
+            if (!TreeCapitatorEBXLAddonMod.onTick(tickType, isStart)) 
+            {
+                this.tickTypes.remove(tickType);
+                this.tickTypes.removeAll(tickType.partnerTicks());
+            }
+        }
+    }
 
-	@Override
-	public EnumSet<TickType> ticks() 
-	{
-		return this.tickTypes;
-	}
+    @Override
+    public EnumSet<TickType> ticks() 
+    {
+        return this.tickTypes;
+    }
 
-	@Override
-	public String getLabel() 
-	{
-		return "TreeCapitatorIC2AddonTicker";
-	}
+    @Override
+    public String getLabel() 
+    {
+        return "TreeCapitatorIC2AddonTicker";
+    }
 
 }

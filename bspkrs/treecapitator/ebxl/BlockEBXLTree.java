@@ -11,7 +11,7 @@ import net.minecraft.src.World;
 
 public class BlockEBXLTree extends BlockCustomLog
 {
-	private TreeBlockBreaker breaker;
+    private TreeBlockBreaker breaker;
 
     public BlockEBXLTree(int i)
     {
@@ -26,8 +26,8 @@ public class BlockEBXLTree extends BlockCustomLog
     @Override
     public void onBlockClicked(World world, int x, int y, int z, EntityPlayer entityPlayer)
     {
-    	breaker = new TreeBlockBreaker(entityPlayer, this.blockID, this.getClass(), BlockLeavesBase.class, BlockVine.class);
-    	breaker.onBlockClicked(world, x, y, z, entityPlayer);
+        breaker = new TreeBlockBreaker(entityPlayer, this.blockID, this.getClass(), BlockLeavesBase.class, BlockVine.class);
+        breaker.onBlockClicked(world, x, y, z, entityPlayer);
     }
 
     /**
@@ -36,9 +36,9 @@ public class BlockEBXLTree extends BlockCustomLog
     @Override
     public void onBlockHarvested(World world, int x, int y, int z, int md, EntityPlayer entityPlayer)
     {
-    	if(breaker == null || !breaker.player.equals(entityPlayer))
-    		breaker = new TreeBlockBreaker(entityPlayer, this.blockID, this.getClass(), BlockLeavesBase.class, BlockVine.class);
-    	breaker.onBlockHarvested(world, x, y, z, md, entityPlayer);
+        if(breaker == null || !breaker.player.equals(entityPlayer))
+            breaker = new TreeBlockBreaker(entityPlayer, this.blockID, this.getClass(), BlockLeavesBase.class, BlockVine.class);
+        breaker.onBlockHarvested(world, x, y, z, md, entityPlayer);
     }
 
     /**

@@ -48,107 +48,107 @@ public class TreeCapitatorEBXLAddonMod
     public ModMetadata metadata;
 
     @PreInit
-	public void preInit(FMLPreInitializationEvent event)
+    public void preInit(FMLPreInitializationEvent event)
     {
-    	TreeCapitator.init();
-    	metadata = event.getModMetadata();
-    	versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
+        TreeCapitator.init();
+        metadata = event.getModMetadata();
+        versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
         versionChecker.checkVersionWithLogging();
     }
 
     @Init
     public void init(FMLInitializationEvent event)
     {
-    	if(event.getSide().equals(Side.CLIENT))
-    	{
-			TickRegistry.registerTickHandler(new TreeCapitatorEBXLAddonTicker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
-			this.mcClient = FMLClientHandler.instance().getClient();
-    	}
+        if(event.getSide().equals(Side.CLIENT))
+        {
+            TickRegistry.registerTickHandler(new TreeCapitatorEBXLAddonTicker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
+            this.mcClient = FMLClientHandler.instance().getClient();
+        }
     }
     
     @PostInit
     public void postInit(FMLPostInitializationEvent event)
-    {    	
-    	Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID] = null;
-    	Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID] = new BlockEBXLTree(BlockManager.CUSTOMLOG.getBlock().get().blockID);
-    	prepareCL(Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID]);
-    	
-    	Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID] = null;
-    	Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID] = 
-    			new BlockEBXLQLTree(BlockManager.QUARTERLOG0.getBlock().get().blockID, BlockQuarterLog.BarkOn.NW);
-    	prepareQL(Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID], "extrabiomes.quarterlog.NW");
-    	
-    	Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID] = null;
-    	Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID] = 
-    			new BlockEBXLQLTree(BlockManager.QUARTERLOG1.getBlock().get().blockID, BlockQuarterLog.BarkOn.NE);
-    	prepareQL(Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID], "extrabiomes.quarterlog.NE");    	
-    	
-    	Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID] = null;
-    	Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID] = 
-    			new BlockEBXLQLTree(BlockManager.QUARTERLOG2.getBlock().get().blockID, BlockQuarterLog.BarkOn.SW);
-    	prepareQL(Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID], "extrabiomes.quarterlog.SW");    	
-    	
-    	Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID] = null;
-    	Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID] = 
-    			new BlockEBXLQLTree(BlockManager.QUARTERLOG3.getBlock().get().blockID, BlockQuarterLog.BarkOn.SE);
-    	prepareQL(Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID], "extrabiomes.quarterlog.SE"); 	
-    	BlockEBXLQLTree.setDropID(BlockManager.QUARTERLOG3.getBlock().get().blockID);
+    {        
+        Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID] = null;
+        Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID] = new BlockEBXLTree(BlockManager.CUSTOMLOG.getBlock().get().blockID);
+        prepareCL(Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID]);
+        
+        Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID] = null;
+        Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID] = 
+                new BlockEBXLQLTree(BlockManager.QUARTERLOG0.getBlock().get().blockID, BlockQuarterLog.BarkOn.NW);
+        prepareQL(Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID], "extrabiomes.quarterlog.NW");
+        
+        Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID] = null;
+        Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID] = 
+                new BlockEBXLQLTree(BlockManager.QUARTERLOG1.getBlock().get().blockID, BlockQuarterLog.BarkOn.NE);
+        prepareQL(Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID], "extrabiomes.quarterlog.NE");        
+        
+        Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID] = null;
+        Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID] = 
+                new BlockEBXLQLTree(BlockManager.QUARTERLOG2.getBlock().get().blockID, BlockQuarterLog.BarkOn.SW);
+        prepareQL(Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID], "extrabiomes.quarterlog.SW");        
+        
+        Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID] = null;
+        Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID] = 
+                new BlockEBXLQLTree(BlockManager.QUARTERLOG3.getBlock().get().blockID, BlockQuarterLog.BarkOn.SE);
+        prepareQL(Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID], "extrabiomes.quarterlog.SE");     
+        BlockEBXLQLTree.setDropID(BlockManager.QUARTERLOG3.getBlock().get().blockID);
     }
     
     protected void prepareCL(Block block)
     {
-		final CommonProxy proxy = Extrabiomes.proxy;
+        final CommonProxy proxy = Extrabiomes.proxy;
 
-		block.setBlockName("extrabiomes.customlog");
-		proxy.registerBlock(block, extrabiomes.utility.MultiItemBlock.class);
-		proxy.setBlockHarvestLevel(block, "axe", 0);
+        block.setBlockName("extrabiomes.customlog");
+        proxy.registerBlock(block, extrabiomes.utility.MultiItemBlock.class);
+        proxy.setBlockHarvestLevel(block, "axe", 0);
 
-		for (final BlockCustomLog.BlockType type : BlockCustomLog.BlockType.values())
-		{
-			final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
-			proxy.addName(itemstack, type.itemName());
-			proxy.registerOre("log", itemstack);
-			proxy.registerOre("log" + type.toString(), itemstack);
-		}
-		
-		proxy.registerEventHandler(block);
+        for (final BlockCustomLog.BlockType type : BlockCustomLog.BlockType.values())
+        {
+            final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
+            proxy.addName(itemstack, type.itemName());
+            proxy.registerOre("log", itemstack);
+            proxy.registerOre("log" + type.toString(), itemstack);
+        }
+        
+        proxy.registerEventHandler(block);
     }
     
-	protected void prepareQL(Block block, String name) 
-	{
-		final CommonProxy proxy = Extrabiomes.proxy;
+    protected void prepareQL(Block block, String name) 
+    {
+        final CommonProxy proxy = Extrabiomes.proxy;
 
-		block.setBlockName(name);
-		proxy.registerBlock(block, extrabiomes.utility.MultiItemBlock.class);
-		proxy.setBlockHarvestLevel(block, "axe", 0);
+        block.setBlockName(name);
+        proxy.registerBlock(block, extrabiomes.utility.MultiItemBlock.class);
+        proxy.setBlockHarvestLevel(block, "axe", 0);
 
-		for (final BlockQuarterLog.BlockType type : BlockQuarterLog.BlockType.values())
-		{
-			final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
-			proxy.addName(itemstack, type.itemName());
-			proxy.registerOre("log", itemstack);
-			proxy.registerOre("log" + type.toString(), itemstack);
-		}
-		
-		proxy.registerEventHandler(block);
-	}
+        for (final BlockQuarterLog.BlockType type : BlockQuarterLog.BlockType.values())
+        {
+            final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
+            proxy.addName(itemstack, type.itemName());
+            proxy.registerOre("log", itemstack);
+            proxy.registerOre("log" + type.toString(), itemstack);
+        }
+        
+        proxy.registerEventHandler(block);
+    }
 
     @SideOnly(Side.CLIENT)
-	public static boolean onTick(TickType tick, boolean isStart)
-	{
-		if (isStart) {
-			return true;
-		}
+    public static boolean onTick(TickType tick, boolean isStart)
+    {
+        if (isStart) {
+            return true;
+        }
 
-		if (mcClient != null && mcClient.thePlayer != null)
-		{
-			if(TreeCapitator.allowUpdateCheck)
-				if(!versionChecker.isCurrentVersion())
-					for(String msg : versionChecker.getInGameMessage())
-						mcClient.thePlayer.addChatMessage(msg);
-			return false;
-		}
+        if (mcClient != null && mcClient.thePlayer != null)
+        {
+            if(TreeCapitator.allowUpdateCheck)
+                if(!versionChecker.isCurrentVersion())
+                    for(String msg : versionChecker.getInGameMessage())
+                        mcClient.thePlayer.addChatMessage(msg);
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

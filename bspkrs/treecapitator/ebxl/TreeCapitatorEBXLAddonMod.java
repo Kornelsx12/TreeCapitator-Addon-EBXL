@@ -23,6 +23,8 @@ import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.TickType;
 import extrabiomes.Extrabiomes;
+import extrabiomes.api.Stuff;
+import extrabiomes.events.BlockActiveEvent.LogActiveEvent;
 import extrabiomes.module.summa.block.BlockCustomLog;
 import extrabiomes.module.summa.block.BlockManager;
 import extrabiomes.module.summa.block.BlockQuarterLog;
@@ -69,30 +71,30 @@ public class TreeCapitatorEBXLAddonMod
     @PostInit
     public void postInit(FMLPostInitializationEvent event)
     {        
-        Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID] = null;
-        Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID] = new BlockEBXLTree(BlockManager.CUSTOMLOG.getBlock().get().blockID);
-        prepareCL(Block.blocksList[BlockManager.CUSTOMLOG.getBlock().get().blockID]);
+        Block.blocksList[Stuff.log.get().blockID] = null;
+        Block.blocksList[Stuff.log.get().blockID] = new BlockEBXLTree(Stuff.log.get().blockID);
+        prepareCL(Block.blocksList[Stuff.log.get().blockID]);
         
-        Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID] = null;
-        Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID] = 
-                new BlockEBXLQLTree(BlockManager.QUARTERLOG0.getBlock().get().blockID, BlockQuarterLog.BarkOn.NW);
-        prepareQL(Block.blocksList[BlockManager.QUARTERLOG0.getBlock().get().blockID], "extrabiomes.quarterlog.NW");
+        Block.blocksList[Stuff.quarterLogNW.get().blockID] = null;
+        Block.blocksList[Stuff.quarterLogNW.get().blockID] = 
+                new BlockEBXLQLTree(Stuff.quarterLogNW.get().blockID, BlockQuarterLog.BarkOn.NW);
+        prepareQL(Block.blocksList[Stuff.quarterLogNW.get().blockID], "extrabiomes.quarterlog.NW");
         
-        Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID] = null;
-        Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID] = 
-                new BlockEBXLQLTree(BlockManager.QUARTERLOG1.getBlock().get().blockID, BlockQuarterLog.BarkOn.NE);
-        prepareQL(Block.blocksList[BlockManager.QUARTERLOG1.getBlock().get().blockID], "extrabiomes.quarterlog.NE");        
+        Block.blocksList[Stuff.quarterLogNE.get().blockID] = null;
+        Block.blocksList[Stuff.quarterLogNE.get().blockID] = 
+                new BlockEBXLQLTree(Stuff.quarterLogNE.get().blockID, BlockQuarterLog.BarkOn.NE);
+        prepareQL(Block.blocksList[Stuff.quarterLogNE.get().blockID], "extrabiomes.quarterlog.NE");        
         
-        Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID] = null;
-        Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID] = 
-                new BlockEBXLQLTree(BlockManager.QUARTERLOG2.getBlock().get().blockID, BlockQuarterLog.BarkOn.SW);
-        prepareQL(Block.blocksList[BlockManager.QUARTERLOG2.getBlock().get().blockID], "extrabiomes.quarterlog.SW");        
+        Block.blocksList[Stuff.quarterLogSW.get().blockID] = null;
+        Block.blocksList[Stuff.quarterLogSW.get().blockID] = 
+                new BlockEBXLQLTree(Stuff.quarterLogSW.get().blockID, BlockQuarterLog.BarkOn.SW);
+        prepareQL(Block.blocksList[Stuff.quarterLogSW.get().blockID], "extrabiomes.quarterlog.SW");        
         
-        Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID] = null;
-        Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID] = 
-                new BlockEBXLQLTree(BlockManager.QUARTERLOG3.getBlock().get().blockID, BlockQuarterLog.BarkOn.SE);
-        prepareQL(Block.blocksList[BlockManager.QUARTERLOG3.getBlock().get().blockID], "extrabiomes.quarterlog.SE");     
-        BlockEBXLQLTree.setDropID(BlockManager.QUARTERLOG3.getBlock().get().blockID);
+        Block.blocksList[Stuff.quarterLogSE.get().blockID] = null;
+        Block.blocksList[Stuff.quarterLogSE.get().blockID] = 
+                new BlockEBXLQLTree(Stuff.quarterLogSE.get().blockID, BlockQuarterLog.BarkOn.SE);
+        prepareQL(Block.blocksList[Stuff.quarterLogSE.get().blockID], "extrabiomes.quarterlog.SE");     
+        BlockEBXLQLTree.setDropID(Stuff.quarterLogSE.get().blockID);
     }
     
     protected void prepareCL(Block block)
@@ -107,10 +109,10 @@ public class TreeCapitatorEBXLAddonMod
         {
             final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
             proxy.addName(itemstack, type.itemName());
-            proxy.registerOre("log", itemstack);
-            proxy.registerOre("log" + type.toString(), itemstack);
+            proxy.registerOre("logWood", itemstack);
         }
         
+        proxy.postEventToBus(new LogActiveEvent(block));
         proxy.registerEventHandler(block);
     }
     
@@ -126,11 +128,13 @@ public class TreeCapitatorEBXLAddonMod
         {
             final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
             proxy.addName(itemstack, type.itemName());
-            proxy.registerOre("log", itemstack);
-            proxy.registerOre("log" + type.toString(), itemstack);
+            proxy.registerOre("logWood", itemstack);
         }
-        
-        proxy.registerEventHandler(block);
+
+        proxy.registerOre("logWood", block);
+        proxy.postEventToBus(new LogActiveEvent(block));
+
+        Extrabiomes.proxy.registerEventHandler(block);
     }
 
     @SideOnly(Side.CLIENT)

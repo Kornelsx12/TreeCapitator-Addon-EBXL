@@ -3,6 +3,7 @@ package bspkrs.treecapitator.ebxl;
 import java.util.EnumSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
+import net.minecraft.src.BlockLog;
 import net.minecraft.src.ItemStack;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -36,12 +37,12 @@ import extrabiomes.proxy.CommonProxy;
 import bspkrs.treecapitator.*;
 import bspkrs.util.ModVersionChecker;
 
-@Mod(name="TreeCapitator Addon EBXL", modid="TreeCapitator Addon EBXL", version="FML 1.3.2.r02", useMetadata=true)
+@Mod(name="TreeCapitator Addon EBXL", modid="TreeCapitator Addon EBXL", version="FML 1.4.2.r01", useMetadata=true)
 @NetworkMod(clientSideRequired=false, serverSideRequired=false)
 public class TreeCapitatorEBXLAddonMod
 {
     private static ModVersionChecker versionChecker;
-    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.3.1/treeCapitatorEBXL.version";
+    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.2/treeCapitatorEBXL.version";
     private String mcfTopic = "http://www.minecraftforum.net/topic/1009577-";
 
     @SideOnly(Side.CLIENT)
@@ -95,6 +96,9 @@ public class TreeCapitatorEBXLAddonMod
                 new BlockEBXLQLTree(Stuff.quarterLogSE.get().blockID, BlockQuarterLog.BarkOn.SE);
         prepareQL(Block.blocksList[Stuff.quarterLogSE.get().blockID], "extrabiomes.quarterlog.SE");     
         BlockEBXLQLTree.setDropID(Stuff.quarterLogSE.get().blockID);
+
+        TreeCapitator.logClasses.add(BlockEBXLTree.class);
+        TreeCapitator.logClasses.add(BlockEBXLQLTree.class);
     }
     
     protected void prepareCL(Block block)

@@ -25,7 +25,6 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.TickType;
 import extrabiomes.Extrabiomes;
 import extrabiomes.api.Stuff;
-import extrabiomes.events.BlockActiveEvent.LogActiveEvent;
 import extrabiomes.module.summa.block.BlockCustomLog;
 import extrabiomes.module.summa.block.BlockManager;
 import extrabiomes.module.summa.block.BlockQuarterLog;
@@ -37,7 +36,7 @@ import extrabiomes.proxy.CommonProxy;
 import bspkrs.treecapitator.*;
 import bspkrs.util.ModVersionChecker;
 
-@Mod(name="TreeCapitator Addon EBXL", modid="TreeCapitator Addon EBXL", version="FML 1.4.2.r01", useMetadata=true)
+@Mod(name="TreeCapitator Addon EBXL", modid="TreeCapitator Addon EBXL", version="FML 1.4.2.r02", useMetadata=true)
 @NetworkMod(clientSideRequired=false, serverSideRequired=false)
 public class TreeCapitatorEBXLAddonMod
 {
@@ -116,7 +115,6 @@ public class TreeCapitatorEBXLAddonMod
             proxy.registerOre("logWood", itemstack);
         }
         
-        proxy.postEventToBus(new LogActiveEvent(block));
         proxy.registerEventHandler(block);
     }
     
@@ -136,7 +134,6 @@ public class TreeCapitatorEBXLAddonMod
         }
 
         proxy.registerOre("logWood", block);
-        proxy.postEventToBus(new LogActiveEvent(block));
 
         Extrabiomes.proxy.registerEventHandler(block);
     }

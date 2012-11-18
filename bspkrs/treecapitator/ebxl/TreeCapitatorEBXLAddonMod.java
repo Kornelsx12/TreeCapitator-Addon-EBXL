@@ -25,6 +25,8 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.TickType;
 import extrabiomes.Extrabiomes;
 import extrabiomes.api.Stuff;
+import extrabiomes.events.BlockActiveEvent.LogActiveEvent;
+import extrabiomes.module.amica.buildcraft.FacadeHelper;
 import extrabiomes.module.summa.block.BlockCustomLog;
 import extrabiomes.module.summa.block.BlockManager;
 import extrabiomes.module.summa.block.BlockQuarterLog;
@@ -36,12 +38,12 @@ import extrabiomes.proxy.CommonProxy;
 import bspkrs.treecapitator.*;
 import bspkrs.util.ModVersionChecker;
 
-@Mod(name="TreeCapitator Addon EBXL", modid="TreeCapitator Addon EBXL", version="FML 1.4.2.r02", useMetadata=true)
+@Mod(name="TreeCapitator Addon EBXL", modid="TreeCapitator Addon EBXL", version="Forge 1.4.4.r01", useMetadata=true)
 @NetworkMod(clientSideRequired=false, serverSideRequired=false)
 public class TreeCapitatorEBXLAddonMod
 {
     private static ModVersionChecker versionChecker;
-    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.2/treeCapitatorEBXL.version";
+    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.4/treeCapitatorEBXL.version";
     private String mcfTopic = "http://www.minecraftforum.net/topic/1009577-";
 
     @SideOnly(Side.CLIENT)
@@ -52,7 +54,7 @@ public class TreeCapitatorEBXLAddonMod
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
-        TreeCapitator.init();
+        TreeCapitator.init(true);
         metadata = event.getModMetadata();
         versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
         versionChecker.checkVersionWithLogging();
@@ -78,23 +80,25 @@ public class TreeCapitatorEBXLAddonMod
         Block.blocksList[Stuff.quarterLogNW.get().blockID] = null;
         Block.blocksList[Stuff.quarterLogNW.get().blockID] = 
                 new BlockEBXLQLTree(Stuff.quarterLogNW.get().blockID, BlockQuarterLog.BarkOn.NW);
-        prepareQL(Block.blocksList[Stuff.quarterLogNW.get().blockID], "extrabiomes.quarterlog.NW");
+        prepareQL(Block.blocksList[Stuff.quarterLogNW.get().blockID], "extrabiomes.log.quarter");
         
         Block.blocksList[Stuff.quarterLogNE.get().blockID] = null;
         Block.blocksList[Stuff.quarterLogNE.get().blockID] = 
                 new BlockEBXLQLTree(Stuff.quarterLogNE.get().blockID, BlockQuarterLog.BarkOn.NE);
-        prepareQL(Block.blocksList[Stuff.quarterLogNE.get().blockID], "extrabiomes.quarterlog.NE");        
+        prepareQL(Block.blocksList[Stuff.quarterLogNE.get().blockID], "extrabiomes.log.quarter");        
         
         Block.blocksList[Stuff.quarterLogSW.get().blockID] = null;
         Block.blocksList[Stuff.quarterLogSW.get().blockID] = 
                 new BlockEBXLQLTree(Stuff.quarterLogSW.get().blockID, BlockQuarterLog.BarkOn.SW);
-        prepareQL(Block.blocksList[Stuff.quarterLogSW.get().blockID], "extrabiomes.quarterlog.SW");        
+        prepareQL(Block.blocksList[Stuff.quarterLogSW.get().blockID], "extrabiomes.log.quarter");        
         
         Block.blocksList[Stuff.quarterLogSE.get().blockID] = null;
         Block.blocksList[Stuff.quarterLogSE.get().blockID] = 
                 new BlockEBXLQLTree(Stuff.quarterLogSE.get().blockID, BlockQuarterLog.BarkOn.SE);
-        prepareQL(Block.blocksList[Stuff.quarterLogSE.get().blockID], "extrabiomes.quarterlog.SE");     
+        prepareQL(Block.blocksList[Stuff.quarterLogSE.get().blockID], "extrabiomes.log.quarter");     
         BlockEBXLQLTree.setDropID(Stuff.quarterLogSE.get().blockID);
+        for (final BlockQuarterLog.BlockType type : BlockQuarterLog.BlockType.values())
+			FacadeHelper.addBuildcraftFacade(Stuff.quarterLogSE.get().blockID, type.metadata());
 
         TreeCapitator.logClasses.add(BlockEBXLTree.class);
         TreeCapitator.logClasses.add(BlockEBXLQLTree.class);
@@ -104,16 +108,19 @@ public class TreeCapitatorEBXLAddonMod
     {
         final CommonProxy proxy = Extrabiomes.proxy;
 
-        block.setBlockName("extrabiomes.customlog");
+        block.setBlockName("extrabiomes.log");
         proxy.registerBlock(block, extrabiomes.utility.MultiItemBlock.class);
         proxy.setBlockHarvestLevel(block, "axe", 0);
 
         for (final BlockCustomLog.BlockType type : BlockCustomLog.BlockType.values())
         {
             final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
-            proxy.addName(itemstack, type.itemName());
             proxy.registerOre("logWood", itemstack);
+			
+			FacadeHelper.addBuildcraftFacade(block.blockID, type.metadata());
         }
+        
+		Extrabiomes.postInitEvent(new LogActiveEvent(block));
         
         proxy.registerEventHandler(block);
     }
@@ -129,11 +136,11 @@ public class TreeCapitatorEBXLAddonMod
         for (final BlockQuarterLog.BlockType type : BlockQuarterLog.BlockType.values())
         {
             final ItemStack itemstack = new ItemStack(block, 1, type.metadata());
-            proxy.addName(itemstack, type.itemName());
             proxy.registerOre("logWood", itemstack);
         }
 
         proxy.registerOre("logWood", block);
+		Extrabiomes.postInitEvent(new LogActiveEvent(block));
 
         Extrabiomes.proxy.registerEventHandler(block);
     }

@@ -1,25 +1,21 @@
-[
 {
-  "modid" : "TreeCapitator Addon EBXL",
-  "name" : "TreeCapitator Addon EBXL",
-  "version" : "FML 1.4.2.r02",
-  "url" : "http://www.minecraftforum.net/topic/1009577-",
-  "credits": "Original by DaftPVF, currently maintained by bspkrs",
-  "authors": [
-     "DaftPVF",
-     "bspkrs",
-     "Lunatrius"
-  ],
-  "description": "Allows you to chop down entire trees by breaking a single log.",
-  "logoFile" : "",
-  "updateUrl" : "https://dl.dropbox.com/u/20748481/Minecraft/1.4.2/treeCapitatorEBXL.version",
-  "parent" : "TreeCapitator",
-  "dependencies": [
-     "mod_MinecraftForge",
-     "TreeCapitator",
-     "ExtrabiomesXL"
-  ],
-  "screenshots": [
-  ]
+  "modinfoversion": 2,
+  "modlist": [{
+    "modid": "TreeCapitator_Addon_EBXL",
+    "name": "TreeCapitator Addon EBXL",
+    "description": "Allows you to chop down entire trees by breaking a single log.",
+    "version": "Forge 1.4.4.r01",
+    "mcversion": "1.4.4",
+    "url": "http://www.minecraftforum.net/topic/1009577-",
+    "updateUrl": "https://dl.dropbox.com/u/20748481/Minecraft/1.4.4/treeCapitatorEBXL.version",
+    "authors": [ "bspkrs" ],
+    "credits": "Created by bspkrs",
+    "logoFile": "",
+    "screenshots": [],
+    "parent": "TreeCapitator",
+    "requiredMods": [ "Forge", "TreeCapitator", "ExtrabiomesXL" ],
+    "dependencies": [ "Forge", "TreeCapitator", "ExtrabiomesXL" ],
+    "dependants": [],
+    "useDependencyInformation": "true"
+  }]
 }
-] 

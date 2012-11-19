@@ -1,7 +1,7 @@
 {
   "modinfoversion": 2,
   "modlist": [{
-    "modid": "TreeCapitator_Addon_EBXL",
+    "modid": "TreeCapitator Addon EBXL",
     "name": "TreeCapitator Addon EBXL",
     "description": "Allows you to chop down entire trees by breaking a single log.",
     "version": "Forge 1.4.4.r01",
